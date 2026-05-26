@@ -1,0 +1,6 @@
+resources:
+  - sample.yaml
+
+images:
+  - name: nginx
+    newTag: 1.31.1

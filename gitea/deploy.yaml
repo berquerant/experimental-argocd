@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitea
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: init-config
+          configMap:
+            name: gitea-config
+        - name: config
+          emptyDir: {}
+        - name: gitea-post-start
+          configMap:
+            name: gitea-post-start
+            defaultMode: 0755
+      initContainers:
+        - name: init-config
+          image: debian
+          command:
+            - bash
+            - -c
+            - |
+              cat /etc/init-gitea/app.ini > /etc/gitea/app.ini
+          volumeMounts:
+            - name: init-config
+              mountPath: /etc/init-gitea
+              readOnly: true
+            - name: config
+              mountPath: /etc/gitea
+      containers:
+        - name: gitea
+          image: gitea
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /usr/local/bin/gitea-post-start/init.sh
+          envFrom:
+            - configMapRef:
+                name: gitea-env
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/gitea
+            - name: gitea-post-start
+              mountPath: /usr/local/bin/gitea-post-start
+              readOnly: true
+          ports:
+            - containerPort: 3000
+              name: http
+            - containerPort: 2222
+              name: ssh

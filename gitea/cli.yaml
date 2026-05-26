@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tea
+  template:
+    metadata:
+      labels:
+        app: tea
+    spec:
+      containers:
+        - name: tea
+          image: tea
+          tty: true
+          command:
+            - sh
+          envFrom:
+            - configMapRef:
+                name: gitea-cli-env
+            - configMapRef:
+                name: gitea-env

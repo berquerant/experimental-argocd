@@ -1,0 +1,35 @@
+resources:
+  - deploy.yaml
+  - service.yaml
+  - cli.yaml
+configMapGenerator:
+  - name: gitea-cli-env
+    literals:
+      - GITEA_SERVER_URL=http://gitea-service:3000
+      - GITEA_SERVER_USER=giteaadmin
+      - GITEA_SERVER_PASSWORD=giteaadmin
+  - name: gitea-env
+    literals:
+      - GITEA_ADMIN_USERNAME=giteaadmin
+      - GITEA_ADMIN_PASSWORD=giteaadmin
+      - GITEA_ADMIN_EMAIL=giteaadmin@example.com
+      - SSH_PORT=2222
+      - GITEA__security__INSTALL_LOCK=true
+      - USER_UID=1000
+      - USER_GID=1000
+  - name: gitea-config
+    files:
+      - app.ini
+  - name: gitea-post-start
+    files:
+      - init.sh
+images:
+  # https://docs.gitea.com/installation/install-with-docker-rootless
+  - name: gitea
+    newName: docker.gitea.com/gitea
+    newTag: 1.26.1
+  - name: tea
+    newName: gitea/tea
+    newTag: 0.14.1
+  - name: debian
+    newTag: trixie-slim
