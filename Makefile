@@ -12,6 +12,9 @@ ARGOCD_NAMESPACE := argocd
 .PHONY: default
 default: create-cluster gitea argocd
 
+.PHONY: recreate
+recreate: delete-cluster default
+
 .PHONY: create-cluster
 create-cluster:
 	kind create cluster --name "$(CLUSTER)" --config cluster.yml --image "$(KIND_IMAGE)"
