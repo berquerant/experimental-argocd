@@ -21,7 +21,7 @@ pod() {
 }
 
 __ssh() {
-  ssh -o StrictHostKeyChecking=no -p 2222 -i "${key}" git@localhost "$@"
+  ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -p 2222 -i "$key" git@localhost "$@"
 }
 
 __git() {
