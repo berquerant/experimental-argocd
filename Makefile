@@ -93,9 +93,8 @@ deploy-argocd:
 	kubectl -n "$(ARGOCD_NAMESPACE)" wait --timeout=120s --for=condition=available deploy/argocd-applicationset-controller
 	kubectl -n "$(ARGOCD_NAMESPACE)" wait --timeout=120s --for=condition=available deploy/argocd-notifications-controller
 	kubectl -n "$(ARGOCD_NAMESPACE)" patch svc argocd-server -p '{"spec": {"type": "NodePort", "ports": [{"port": 80, "nodePort": 30010}, {"port": 443, "nodePort": 30011}]}}'
-	@echo Login to http://localhost:3011 with username admin and passowrd:
 	./argocd.sh init
-	echo
+	@echo Login to http://localhost:3011 with username admin and passowrd admin:
 
 .PHONY: register-repo
 register-repo:
