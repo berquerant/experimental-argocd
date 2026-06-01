@@ -12,7 +12,7 @@ make
 
 Login to Gitea:  http://localhost:3000/ (username and password are admin).
 
-Login to ArgoCD: http://localhost:3010/ (username is admin, get password with `./argocd.sh init`).
+Login to ArgoCD: http://localhost:3010/ (username and password are admin).
 
 ### Push changes
 
