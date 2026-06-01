@@ -6,13 +6,13 @@ configMapGenerator:
   - name: gitea-cli-env
     literals:
       - GITEA_SERVER_URL=http://gitea-service:3000
-      - GITEA_SERVER_USER=giteaadmin
-      - GITEA_SERVER_PASSWORD=giteaadmin
+      - GITEA_SERVER_USER=admin
+      - GITEA_SERVER_PASSWORD=admin
   - name: gitea-env
     literals:
-      - GITEA_ADMIN_USERNAME=giteaadmin
-      - GITEA_ADMIN_PASSWORD=giteaadmin
-      - GITEA_ADMIN_EMAIL=giteaadmin@example.com
+      - GITEA_ADMIN_USERNAME=admin
+      - GITEA_ADMIN_PASSWORD=admin
+      - GITEA_ADMIN_EMAIL=admin@example.com
       - SSH_PORT=2222
       - GITEA__security__INSTALL_LOCK=true
       - USER_UID=1000

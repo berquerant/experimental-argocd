@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     path: sample
-    repoURL: http://gitea-service.gitea.svc.cluster.local:3000/giteaadmin/test-repo.git
+    repoURL: http://gitea-service.gitea.svc.cluster.local:3000/admin/test-repo.git
     targetRevision: main
   destination:
     namespace: default

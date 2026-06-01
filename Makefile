@@ -3,9 +3,9 @@ KIND_IMAGE := kindest/node:v1.35.0
 GITEA_NAMESPACE := gitea
 GITEA_REPO := test-repo
 GITEA_REPO_LOCAL := tmp/test-repo
-GITEA_ADMIN_USERNAME := giteaadmin
-GITEA_ADMIN_PASSWORD := giteaadmin
-GITEA_ADMIN_EMAIL := giteaadmin@example.com
+GITEA_ADMIN_USERNAME := admin
+GITEA_ADMIN_PASSWORD := admin
+GITEA_ADMIN_EMAIL := admin@example.com
 ARGOCD_VERSION := v3.4.2
 ARGOCD_NAMESPACE := argocd
 
@@ -48,7 +48,7 @@ PUBKEY := tmp/admin.key.pub
 init-gitea:
 	mkdir -p tmp
 	rm -f "$(KEY)" "$(PUBKEY)"
-	ssh-keygen -t ed25519 -C "giteaadmin@example.com" -f "$(KEY)" -N ""
+	ssh-keygen -t ed25519 -C "$(GITEA_ADMIN_EMAIL)" -f "$(KEY)" -N ""
 	kubectl cp "$(PUBKEY)" "gitea/$(shell ./gitea.sh pod):/tmp/admin.key.pub"
 	sleep 5
 	./gitea.sh run sh -c "tea logins add && tea ssh-keys add /tmp/admin.key.pub && tea login default gitea-service:3000"
@@ -66,7 +66,7 @@ create-gitea-repo:
 .PHONY: prepare-repo
 prepare-repo:
 	rm -rf "$(GITEA_REPO_LOCAL)"
-	./gitea.sh git clone "ssh://git@localhost:2222/giteaadmin/$(GITEA_REPO).git" "$(GITEA_REPO_LOCAL)"
+	./gitea.sh git clone "ssh://git@localhost:2222/$(GITEA_ADMIN_USERNAME)/$(GITEA_REPO).git" "$(GITEA_REPO_LOCAL)"
 	cp -r repo/ "$(GITEA_REPO_LOCAL)/"
 	cd "$(GITEA_REPO_LOCAL)" && git add -A && git commit -m "Init" && ../../gitea.sh git push
 	@echo cd $(GITEA_REPO_LOCAL), use ../../gitea.sh git push to push changes to gitea
@@ -99,7 +99,7 @@ deploy-argocd:
 
 .PHONY: register-repo
 register-repo:
-	./argocd.sh repo add "http://gitea-service.gitea.svc.cluster.local:3000/giteaadmin/$(GITEA_REPO).git" --username "$(GITEA_ADMIN_USERNAME)" --password "$(GITEA_ADMIN_PASSWORD)"
+	./argocd.sh repo add "http://gitea-service.gitea.svc.cluster.local:3000/$(GITEA_ADMIN_USERNAME)/$(GITEA_REPO).git" --username "$(GITEA_ADMIN_USERNAME)" --password "$(GITEA_ADMIN_PASSWORD)"
 
 .PHONY: apply-repo
 apply-repo:

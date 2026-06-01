@@ -10,7 +10,7 @@ Create a [Kind](https://kind.sigs.k8s.io/) cluster, deploy [ArgoCD](https://argo
 make
 ```
 
-Login to Gitea:  http://localhost:3000/ (username and password are giteaadmin).
+Login to Gitea:  http://localhost:3000/ (username and password are admin).
 
 Login to ArgoCD: http://localhost:3010/ (username is admin, get password with `./argocd.sh init`).
 
